@@ -1,4 +1,4 @@
-# NexGene v0.5
+# NexGene v0.6
 
 Daily NexGene experience milestone:
 - authenticated user
@@ -6,6 +6,7 @@ Daily NexGene experience milestone:
 - evening check-in
 - chronological timeline
 - simple longitudinal baseline insights
+- mobile frontend (served at / and /mobile)
 
 ## Run
 ```bash
@@ -13,9 +14,13 @@ docker compose up --build
 ```
 
 API docs: http://localhost:8000/docs
+Mobile UI: http://localhost:8000/
 
 ## Test
 ```bash
+# From project root
+PYTHONPATH=backend pytest backend/tests -q
+# Or with Docker
 docker compose exec api pytest -q
 ```
 
