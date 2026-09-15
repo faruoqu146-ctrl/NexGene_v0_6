@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NexGene</title>
-  <link rel="stylesheet" href="/mobile/styles.css" />
-</head>
-<body>
-  <div id="app">
-    <header>
-      <h1>NexGene</h1>
-      <p class="subtitle">Daily check-in</p>
-    </header>
-    <main id="main"></main>
-  </div>
-  <script src="/mobile/app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f7f5ef"><title>NexGene</title><link rel="stylesheet" href="/mobile/styles.css"></head><body><main>
+<section id="auth" class="screen"><div class="mark">N</div><p class="eyebrow">NEXGENE</p><h1>Know your patterns.<br>Understand your health.</h1><p class="muted">Build a longitudinal picture of everyday health, one small check-in at a time.</p><div class="card"><div class="tabs"><button id="loginTab" class="tab active">Log in</button><button id="registerTab" class="tab">Create account</button></div><form id="authForm"><label>Email<input id="email" type="email" required></label><label>Password<input id="password" type="password" minlength="8" required></label><button class="primary">Log in</button><p id="authError" class="error"></p></form></div></section>
+<section id="home" class="screen hidden"><header><div><p class="eyebrow">NEXGENE</p><h2 id="greeting">Good morning</h2></div><button id="logout" class="icon">↗</button></header><section class="hero card"><p class="eyebrow">TODAY</p><h1 id="headline">Let's check in.</h1><p id="sub" class="muted">A few quick answers are enough to start.</p></section><section><div class="sectionHead"><h3>Your day</h3><span id="count" class="pill">0 entries</span></div><div id="today" class="grid"></div></section><section><div class="sectionHead"><h3>What NexGene sees</h3></div><div id="insights"></div></section><section><h3>Check in</h3><div class="actions"><button id="morning" class="action"><span>☀️</span><b>Morning</b><small>Sleep, energy, quality</small></button><button id="evening" class="action"><span>🌙</span><b>Evening</b><small>Mood, stress, focus</small></button></div></section><section><div class="sectionHead"><h3>Timeline</h3><button id="refresh" class="text">Refresh</button></div><div id="timeline"></div></section></section>
+<dialog id="dlg"><div class="dialogInner"><button id="close" class="close">×</button><p id="dlgEyebrow" class="eyebrow">MORNING</p><h2 id="dlgTitle">How did you sleep?</h2><form id="checkin"><div id="morningFields"><label>Sleep duration <span id="sleepVal">7.0 h</span><input id="sleep" type="range" min="0" max="12" step=".1" value="7"></label><label>Sleep quality <span id="qualityVal">7 / 10</span><input id="quality" type="range" min="1" max="10" value="7"></label><label>Energy <span id="energyVal">7 / 10</span><input id="energy" type="range" min="1" max="10" value="7"></label></div><div id="eveningFields" class="hidden"><label>Mood <span id="moodVal">7 / 10</span><input id="mood" type="range" min="1" max="10" value="7"></label><label>Stress <span id="stressVal">4 / 10</span><input id="stress" type="range" min="1" max="10" value="4"></label><label>Focus <span id="focusVal">7 / 10</span><input id="focus" type="range" min="1" max="10" value="7"></label><label>Activity today <span id="activityVal">30 min</span><input id="activity" type="range" min="0" max="180" step="5" value="30"></label></div><button class="primary">Save check-in</button><p id="checkinError" class="error"></p></form></div></dialog></main><script src="/mobile/app.js"></script></body></html>
