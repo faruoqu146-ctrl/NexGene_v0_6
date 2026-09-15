@@ -12,17 +12,18 @@ services:
       - ./database/001_initial_schema.sql:/docker-entrypoint-initdb.d/001_initial_schema.sql:ro
 
   api:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       DATABASE_URL: postgresql+psycopg://nexgene:nexgene_dev_only@db:5432/nexgene
       JWT_SECRET: nexgene_dev_secret_change_me
       ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+      PORT: "8000"
     ports:
       - "8000:8000"
     depends_on:
       - db
-    volumes:
-      - ./backend:/app
 
 volumes:
   postgres_data:
