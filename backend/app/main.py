@@ -1,11 +1,19 @@
-import os
 from pathlib import Path
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from app.api import auth, checkins, dev, observations, profile, timeline
+from app.db.database import init_db
 
-app = FastAPI(title="NexGene API", version="0.6.0")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
+
+app = FastAPI(title="NexGene API", version="0.6.0", lifespan=lifespan)
 app.include_router(auth.router)
 app.include_router(profile.router)
 app.include_router(observations.router)
@@ -25,6 +33,7 @@ MOBILE_DIR = next((p for p in _candidates if p.is_dir()), None)
 if MOBILE_DIR is not None:
     app.mount("/mobile", StaticFiles(directory=str(MOBILE_DIR)), name="mobile")
 
+
 @app.get("/")
 def root():
     if MOBILE_DIR is not None:
@@ -32,6 +41,7 @@ def root():
         if index.exists():
             return FileResponse(index)
     return {"name": "NexGene", "version": "0.6.0"}
+
 
 @app.get("/api/v1/health")
 def health():

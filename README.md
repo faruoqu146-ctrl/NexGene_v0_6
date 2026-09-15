@@ -50,6 +50,7 @@ docker compose exec api pytest -q
    - API docs:        `https://your-service.onrender.com/docs`
 
 **Notes**
+- Tables and observation types are created automatically on first startup.
 - Free-tier services sleep after inactivity; the first request after sleep can take ~30–60 s.
 - This is a development prototype. Do not use real patient, clinical, genetic, or production credentials.
 - The insight engine is rule-based only. It is not medical advice.
