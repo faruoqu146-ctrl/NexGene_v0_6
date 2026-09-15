@@ -1,4 +1,3 @@
--- NexGene initial schema
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(320) UNIQUE NOT NULL,
@@ -30,19 +29,27 @@ CREATE TABLE IF NOT EXISTS observations (
     text_value TEXT,
     boolean_value BOOLEAN,
     recorded_at TIMESTAMPTZ NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    CONSTRAINT observation_one_value CHECK (
+        (CASE WHEN numeric_value IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN text_value IS NOT NULL THEN 1 ELSE 0 END) +
+        (CASE WHEN boolean_value IS NOT NULL THEN 1 ELSE 0 END) = 1
+    )
 );
 
-CREATE INDEX IF NOT EXISTS idx_observations_user ON observations(user_id);
-CREATE INDEX IF NOT EXISTS idx_observations_recorded ON observations(recorded_at);
-
--- Seed common observation types
 INSERT INTO observation_types (code, name, unit) VALUES
-    ('sleep_duration', 'Sleep duration', 'hours'),
-    ('sleep_quality', 'Sleep quality', '1-10'),
-    ('energy', 'Energy', '1-10'),
-    ('mood', 'Mood', '1-10'),
-    ('stress', 'Stress', '1-10'),
-    ('exercise_minutes', 'Exercise', 'minutes'),
-    ('symptoms', 'Symptoms', NULL)
+('sleep_duration', 'Sleep duration', 'hours'),
+('sleep_quality', 'Sleep quality', NULL),
+('energy', 'Energy', NULL),
+('mood', 'Mood', NULL),
+('stress', 'Stress', NULL),
+('focus', 'Focus', NULL),
+('activity_duration', 'Activity duration', 'minutes'),
+('weight', 'Weight', 'kg'),
+('heart_rate', 'Heart rate', 'bpm'),
+('hrv', 'Heart rate variability', 'ms'),
+('blood_pressure_systolic', 'Blood pressure systolic', 'mmHg'),
+('blood_pressure_diastolic', 'Blood pressure diastolic', 'mmHg'),
+('glucose', 'Glucose', 'mg/dL'),
+('temperature', 'Temperature', 'C')
 ON CONFLICT (code) DO NOTHING;
