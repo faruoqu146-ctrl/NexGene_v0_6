@@ -2,38 +2,31 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.auth.dependencies import get_current_user
 from app.db.database import get_db
-from app.db.models import Observation, ObservationType
-from app.schemas import TimelineItem
+from app.db.models import Observation, ObservationType, User
+from app.schemas import ObservationResponse
 
 router = APIRouter(prefix="/api/v1/timeline", tags=["timeline"])
 
-@router.get("", response_model=list[TimelineItem])
+@router.get("", response_model=list[ObservationResponse])
 def timeline(
-    current_user=Depends(get_current_user),
-    db: Session=Depends(get_db),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     rows = (
         db.query(Observation, ObservationType)
         .join(ObservationType, Observation.observation_type_id == ObservationType.id)
         .filter(Observation.user_id == current_user.id)
-        .order_by(Observation.recorded_at.desc())
-        .limit(200)
+        .order_by(Observation.recorded_at.asc())
         .all()
     )
-    result = []
-    for observation, observation_type in rows:
-        value = (
-            observation.numeric_value
-            if observation.numeric_value is not None
-            else observation.text_value
-            if observation.text_value is not None
-            else observation.boolean_value
+    return [
+        ObservationResponse(
+            id=obs.id,
+            observation_type=ot.code,
+            numeric_value=obs.numeric_value,
+            text_value=obs.text_value,
+            boolean_value=obs.boolean_value,
+            recorded_at=obs.recorded_at,
         )
-        result.append(
-            TimelineItem(
-                recorded_at=observation.recorded_at,
-                observation_type=observation_type.code,
-                value=value,
-            )
-        )
-    return result
+        for obs, ot in rows
+    ]
