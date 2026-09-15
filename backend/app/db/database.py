@@ -6,7 +6,6 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL",
     "postgresql+psycopg://nexgene:nexgene_dev_only@localhost:5432/nexgene",
 )
-
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
